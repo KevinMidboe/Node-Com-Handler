@@ -167,10 +167,11 @@ def space_format(size):
 	return formated
 
 def pirate(message):
+	# TODO handle output from call, and better magnet parse
 	magnet = message.replace('pirate ', '')
 	print(magnet)
 	raw = call(['transmission-remote', '-a', magnet])
-	return raw
+	return 'Added magnet'
 
 # This is a repeting loop that runs everytime a message is recv in socket
 while True:
