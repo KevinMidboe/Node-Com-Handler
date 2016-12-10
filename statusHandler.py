@@ -34,7 +34,7 @@ def uptime():
 # Get's info from session XML file by plex
 def plex():
 	# Every call saves the info of session.xml to a file named plexPlaying
-	os.system('curl --silent localhost:32400/status/sessions > ~/plexPy/plexPlaying.xml')
+	os.system('curl --silent 10.0.0.41:32400/status/sessions > ~/plexPy/plexPlaying.xml')
 
 	# XML parsing, creates a tree and saves the root node as root
 	tree = ET.parse('plexPy/plexPlaying.xml')
@@ -77,7 +77,7 @@ def plex():
 
 
 def i2c_plex():
-	os.system('curl --silent localhost:32400/status/sessions > ~/plexPy/plexPlaying.xml')
+	os.system('curl --silent 10.0.0.41:32400/status/sessions > ~/plexPy/plexPlaying.xml')
 
 	# XML parsing, creates a tree and saves the root node as root
 	tree = ET.parse('plexPy/plexPlaying.xml')
