@@ -166,6 +166,11 @@ def space_format(size):
 
 	return formated
 
+def pirate(message):
+	magnet = message.replace('pirate ', '')
+	print(magnet)
+	raw = call(['transmission-remote', '-a', magnet])
+	return raw
 
 # This is a repeting loop that runs everytime a message is recv in socket
 while True:
@@ -193,6 +198,8 @@ while True:
 		return_message = i2c_plex()
 	elif (message == '--help'):
 		return_message = 'temp\nup\nspace {option}\n'
+	elif ('pirate' in message):
+		return_message = pirate(message)
 	else:
 		return_message = 'none'
 
