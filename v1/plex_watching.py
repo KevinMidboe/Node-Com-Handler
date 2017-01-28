@@ -3,10 +3,11 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 23:21:22
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-28 23:28:49
+# @Last Modified time: 2017-01-28 23:35:04
 
 from os import system, popen
 import xml.etree.ElementTree as ET
+from unicodedata import normalize
 
 def plex_watching():
 	# Every call saves the info of session.xml to a file named plexPlaying
