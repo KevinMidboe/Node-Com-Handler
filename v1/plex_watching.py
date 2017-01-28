@@ -5,12 +5,12 @@
 # @Last Modified by:   KevinMidboe
 # @Last Modified time: 2017-01-28 23:28:49
 
-from os import system
+from os import system, popen
 import xml.etree.ElementTree as ET
 
 def plex_watching():
 	# Every call saves the info of session.xml to a file named plexPlaying
-	system('curl --silent 10.0.0.41:32400/status/sessions > /plexPy/plexPlaying.xml')
+	system('curl --silent 10.0.0.41:32400/status/sessions > plexPy/plexPlaying.xml')
 
 	# XML parsing, creates a tree and saves the root node as root
 	tree = ET.parse('plexPy/plexPlaying.xml')
@@ -21,7 +21,7 @@ def plex_watching():
 	if (root.get('size') != '0'):
 
 		# Get load of CPU and I/O
-		return_text = '\n\t' + str(os.popen('cat /proc/loadavg').read())
+		return_text = '\n\t' + str(popen('cat /proc/loadavg').read())
 		return_text += '\tCur: \t' + str(root.get('size')) + '\n'
 
 		# Goes through all the 'video' elements in MediaContainer
