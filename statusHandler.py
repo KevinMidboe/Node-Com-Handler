@@ -16,7 +16,7 @@ from unicodedata import normalize
 from subprocess import *
 from socket import *
 
-from v1/uptime.py import timeSinceBoot
+# from uptime import timeSinceBoot
 
 # Define the socket communicating will transfered
 serverSocket = socket(AF_INET, SOCK_DGRAM)
@@ -186,7 +186,7 @@ while True:
 	if (message == 'temp'):
 		return_message = temp()
 	elif (message == 'up'):
-		return_message = timeSinceBoot()
+		return_message = uptime()
 	elif (message == 'plex'):
 		return_message = plex()
 	elif (message.find('space') != -1):
