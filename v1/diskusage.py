@@ -9,9 +9,9 @@ from os import statvfs
 	
 def sizeof(num, suffix='B'):
 	for unit in ['','K','M','G','T','P','E','Z']:
-		if abs(num) < 1000.0:
+		if abs(num) < 1024.0:
 			return "%3.1f%s%s" % (num, unit, suffix)
-		num /= 1000.0
+		num /= 1024.0
 	return "%.1f%s%s" % (num, 'Y', suffix)
 
 def diskUsage(path='/'):
@@ -23,5 +23,5 @@ def diskUsage(path='/'):
 	return { 'left':sizeof(byteLeft), 'used':sizeof(byteUsed), 'total':sizeof(byteTotal) }
 
 if __name__=="__main__":
-	n = diskUsage('/')
+	n = diskUsage('/media/hdd1')
 	print(n)
