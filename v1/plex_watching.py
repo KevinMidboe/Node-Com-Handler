@@ -3,14 +3,14 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 23:21:22
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-28 23:23:01
+# @Last Modified time: 2017-01-28 23:28:49
 
 from os import system
 import xml.etree.ElementTree as ET
 
 def plex_watching():
 	# Every call saves the info of session.xml to a file named plexPlaying
-	system('curl --silent 10.0.0.41:32400/status/sessions > ~/plexPy/plexPlaying.xml')
+	system('curl --silent 10.0.0.41:32400/status/sessions > /plexPy/plexPlaying.xml')
 
 	# XML parsing, creates a tree and saves the root node as root
 	tree = ET.parse('plexPy/plexPlaying.xml')
