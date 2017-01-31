@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-27 19:48:42
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-31 23:01:48
+# @Last Modified time: 2017-01-31 23:11:42
 
 # TODO add better error handling to return statements
 
@@ -21,6 +21,7 @@ def secToHour(seconds):
 	hours = (seconds)//3600
 	minutes = (seconds - hours*3600)//60
 	hourMinutes = '%02d' % hours + +':'+ '%02d' % minutes
+	return hourMinutes
 
 def timeSinceBoot():
 	bootTime = boot_time()	# Use psutil 'boot_time' to get seconds since start
