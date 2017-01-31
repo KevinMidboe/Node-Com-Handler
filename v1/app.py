@@ -9,8 +9,8 @@ from json import loads, dumps
 from werkzeug.security import generate_password_hash, \
 	check_password_hash
 
-import uptime
 from diskusage import diskUsage
+from uptime import timeSinceBoot
 
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
@@ -70,22 +70,15 @@ def get_diskUsage():
 	except:
 		abort(404)
 
-@app.route('/api/v1/disks/<disk_name>', methods=['GET'])
-@auth.login_required
-def get_singleDiskUsage(disk_name, other):
-
-	if (diskUsage(disk_name)):
-		return jsonify({task_type: diskUsage(disk_name)})
-	else:
-		abort(404)
 
 @app.route('/api/v1/uptimes', methods=['GET'])
 @auth.login_required
 def get_uptimes():
-	up = uptime.uptime()
-	print(up)
-	return jsonify({'duration': up.duration, 'users': up.users,
-		'load': up.load})
+	try:
+		return jsonify({ 'uptime': timeSinceBoot() })
+	except:
+		abort(404)
+
 
 @app.route('/api/v1/uptimes/duration', methods=['GET'])
 @auth.login_required

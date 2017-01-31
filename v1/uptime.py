@@ -3,7 +3,9 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-27 19:48:42
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-31 21:02:21
+# @Last Modified time: 2017-01-31 23:01:48
+
+# TODO add better error handling to return statements
 
 from psutil import boot_time
 from time import time
@@ -27,16 +29,14 @@ def timeSinceBoot():
 
 	# Return in day format
 	if deltaSeconds >= 86400:
-		# TODO error handling
 		return secToDay(deltaSeconds)
 
 	# Return in hour format
 	elif deltaSeconds < 86400 and deltaSeconds >= 0:
-		# TODO error handling
 		return secToHour(deltaSeconds)
 	else:
-		# Throw error
-		return 'Null'
+		# TODO Throw error
+		return None
 
 if __name__=="__main__":
 	print(timeSinceBoot())
