@@ -53,4 +53,4 @@ def plex_watching():
 		return 'Null playing'
 
 if __name__ == '__main__':
-	plex_watching()
+	print(plex_watching())
