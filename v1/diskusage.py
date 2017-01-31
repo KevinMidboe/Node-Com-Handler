@@ -3,13 +3,14 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 10:54:06
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-31 21:40:34
+# @Last Modified time: 2017-01-31 22:29:43
 
 # f_avail = free blocks avail to non sudo
 # frsize = fundamental file sys byte size
 # f_blocks = total number of blocks in the filesystem
 
 from os import statvfs
+from re import sub
 
 def sizeof(num, suffix='B'):
 	for unit in ['','K','M','G','T','P','E','Z']:
@@ -19,7 +20,11 @@ def sizeof(num, suffix='B'):
 	return "%.1f%s%s" % (num, 'Y', suffix)
 
 # diskUsage uses statvfs to calculate disk size and availability for given disk
-def diskUsage(path='/'):
+def diskUsage(optionalPath=None):
+	path = '/'
+	if optionalPath != None:
+		path += sub('\+', '/', optionalPath)
+
 	try:
 		s = statvfs(path)
 		byteLeft = s.f_bavail * s.f_frsize
@@ -29,6 +34,8 @@ def diskUsage(path='/'):
 		return { 'left':sizeof(byteLeft), 'used':sizeof(byteUsed), 'total':sizeof(byteTotal) }
 
 	except FileNotFoundError:
+		return None
+	except TypeError:
 		return None
 
 if __name__=="__main__":
