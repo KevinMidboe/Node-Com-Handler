@@ -3,34 +3,37 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-27 19:48:42
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-28 13:30:19
+# @Last Modified time: 2017-01-31 21:02:21
 
 from psutil import boot_time
 from time import time
 
+def secToDay(seconds):
+	days = int(seconds/86400)
+	if days is 1:
+		return str(days)+' day'
+	else:
+		return str(days)+' days'
+
+def secToHour(seconds):
+	hours = (seconds)//3600
+	minutes = (seconds - hours*3600)//60
+	hourMinutes = '%02d' % hours + +':'+ '%02d' % minutes
+
 def timeSinceBoot():
-	# Use psutil 'boot_time' to get seconds since start
-	bootTime = boot_time()
-	# Use 'time()' to get seconds currently
-	currTime = time()
-	delta = int(currTime-bootTime) 
+	bootTime = boot_time()	# Use psutil 'boot_time' to get seconds since start
+	currTime = time() 	# Use 'time()' to get seconds currently
+	deltaSeconds = int(currTime-bootTime) 
 
 	# Return in day format
-	if delta >= 86400:
+	if deltaSeconds >= 86400:
 		# TODO error handling
-		rt = int(delta/86400)
-		if rt is 1:
-			return str(rt)+' day'
-		else:
-			return str(rt)+' days'
+		return secToDay(deltaSeconds)
 
 	# Return in hour format
-	elif delta < 86400 and delta >= 0:
+	elif deltaSeconds < 86400 and deltaSeconds >= 0:
 		# TODO error handling
-		hours = (delta)//3600
-		minutes = (delta - hours*3600)//60
-		rt = '%02d' % hours +':'+ '%02d' % minutes
-		return rt
+		return secToHour(deltaSeconds)
 	else:
 		# Throw error
 		return 'Null'
