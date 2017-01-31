@@ -64,10 +64,10 @@ def bad_request(error):
 @app.route('/api/v1/disks', methods=['GET'])
 @auth.login_required
 def get_diskUsage():
-	
-	if (diskUsage()):
-		return jsonify(diskUsage())
-	else:
+	try:
+		returningDiskUsage = diskUsage(request.args.get('dir'))
+		return jsonify(returningDiskUsage)
+	except:
 		abort(404)
 
 @app.route('/api/v1/disks/<disk_name>', methods=['GET'])
