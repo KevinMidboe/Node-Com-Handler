@@ -23,22 +23,22 @@ users = {
 }
 
 # Flask function for checking password sent with http request
-@auth.verify_password
-def verify_password(email, password):
-    return verifyHash(password)
+# @auth.verify_password
+# def verify_password(email, password):
+#     return verifyHash(password)
 
-# Costum function for hashing and verifying the sent password.
-# TODO Read if ok to send in cleartext like this if use https
-def verifyHash(pw):
-	pw_hash = generate_password_hash(pw)
-	return check_password_hash(pw_hash, pw)
+# # Costum function for hashing and verifying the sent password.
+# # TODO Read if ok to send in cleartext like this if use https
+# def verifyHash(pw):
+# 	pw_hash = generate_password_hash(pw)
+# 	return check_password_hash(pw_hash, pw)
 
 # Flask function for getting password matching username sent by http request
 @auth.get_password
 def get_pw(username):
-	if username in users:
-		return users.get(username)
-	return None
+    if username in users:
+        return users.get(username)
+    return None
 
 # Flasks own error handler that makes and returns error 401 if creds
 # to not match.
@@ -101,4 +101,4 @@ def get_uptimesLoad():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0',port=63580,debug=True)
+	app.run(host='0.0.0.0', port=63588)
