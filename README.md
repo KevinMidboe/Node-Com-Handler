@@ -1,4 +1,4 @@
-# Apollo comHandler
+# Node ComHandler
 
 > A python application for communication with and through a centralized server.
 
