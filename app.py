@@ -10,12 +10,12 @@ import requests
 from werkzeug.security import generate_password_hash, \
 	check_password_hash
 
-from diskusage import diskUsage
-from uptime import timeSinceBoot
-from cpuTemp import getCpuTemp
-from tmdb import tmdbSearch
+from status.diskusage import diskUsage
+from status.uptime import timeSinceBoot
+from status.cpuTemp import getCpuTemp
+from plex.tmdb import tmdbSearch
 
-from plexMovies import getSpecificMovieInfo
+from plex.plexMovies import getSpecificMovieInfo
 
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
