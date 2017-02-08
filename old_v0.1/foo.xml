@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<root>
+	<Status load="0.05 0.05 0.05 1/262 15997"/>
+	<PlexMedia size="2"/>
+	<Video Device="iPhone" Playing="Interstellar" Prog="58.6" State="Playing" User="KevinMidboe"/>
+	<Video Device="Samsung TV" Playing="Home Alone" Prog="32.9" State="Stopped" User="MajElg"/>
+	<child Name="Kevin" age="10"/>
+</root>
