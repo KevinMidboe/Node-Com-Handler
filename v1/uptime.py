@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-27 19:48:42
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-31 23:13:20
+# @Last Modified time: 2017-02-03 12:33:51
 
 # TODO add better error handling to return statements
 
