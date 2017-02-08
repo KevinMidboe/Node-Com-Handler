@@ -6,6 +6,25 @@ button.onclick = function () {
     queryTMDB(text);
 }
 
+function clearSearchResults() {
+	var displayNode = document.getElementById("display");
+	while (displayNode.firstChild) {
+    displayNode.removeChild(displayNode.firstChild);
+	}
+}
+
+function toggle(button) {
+	toggleNode = document.getElementById("myonoffswitch");
+	console.log(toggleNode);
+
+
+  if(toggleNode.value=="movies"){
+   toggleNode.value="shows";}
+
+  else if(toggleNode.value=="shows"){
+   toggleNode.value="movies";}
+}
+
 function queryTMDB(query) {
 	var data = "{}";
 
@@ -14,6 +33,8 @@ function queryTMDB(query) {
 
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === this.DONE) {
+	  	clearSearchResults()
+
 	  	var display = document.getElementById("display");
 	  	var jsonObj = JSON.parse(this.responseText);
 	  	console.log(jsonObj.movies);
@@ -27,14 +48,19 @@ function queryTMDB(query) {
 	  			var poster_path = "http://image.tmdb.org/t/p/w500"+jsonObj.movies[key].poster_path;
 	  		else
 	  			var poster_path = "images/image_nf.svg";
+
+	  		var exists = jsonObj.movies[key].exists;
 	  		
 	  		var node = document.createElement("li");                 // Create a <li> node
 			var imageNode = document.createElement('img');
 			var textNode = document.createTextNode(title);         // Create a text node
 			var buttonNode = document.createElement("span");
 			var button2Node = document.createElement("span");
-			buttonNode.innerHTML = '<button onclick="request('+ id +')">REQUEST</button>';
-			button2Node.innerHTML = '<button onclick="request('+ id +')">FORCE REQUEST</button>';
+			if (!exists) {
+				buttonNode.innerHTML = '<button onclick="request('+ id +')">REQUEST</button>';
+			}
+			else
+				button2Node.innerHTML = '<button onclick="request('+ id +')">FORCE REQUEST</button>';
 			
 			imageNode.src = poster_path;
 			imageNode.style.width = "500px";
@@ -47,6 +73,9 @@ function queryTMDB(query) {
 			display.appendChild(node);
 
 	  	});
+	  }
+	  else {
+	  	console.log("404");
 	  }
 	});
 

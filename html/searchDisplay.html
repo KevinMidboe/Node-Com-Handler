@@ -2,10 +2,20 @@
 <html>
 <head>
 	<title>tmdb.org Search Displayer</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<input type='text' id='link_id'>
 	<input type='button' id='btnSearch' value='Search' onClick="search(this)"'>
+	
+	<div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" value="movies" onClick="toggle(this)" checked>
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+</div>
+
 	<p id="display"></p>
 </body>
 

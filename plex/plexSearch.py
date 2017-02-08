@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-02-08 14:00:04
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-02-08 14:06:48
+# @Last Modified time: 2017-02-08 22:50:17
 
 from requests import get
 
@@ -66,4 +66,8 @@ def plexSearch(query):
 
 
 if __name__ == "__main__":
-	print(plexSearch("star+wars"))
+	# print(plexSearch("star+wars"))
+	tiss = plexSearch("star+wars")
+	for al in tiss:
+		if (al['year']==2015):
+			print('thishsihis')

@@ -3,11 +3,25 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 23:21:22
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-28 23:35:04
+# @Last Modified time: 2017-02-08 20:29:53
 
-from os import system, popen
-import xml.etree.ElementTree as ET
-from unicodedata import normalize
+from requests import get
+
+plexBaseURL = "http://10.0.0.41:32400/"
+
+def parsePlexWatching(obj):
+	print(obj) 
+
+def getPlexWatching():
+	requestType = "status/sessions"
+	header = {'Accept': 'application/json'}
+
+	url = plexBaseURL + requestType
+	response = get(url, headers=header)
+
+	if response.status_code == 200:
+		watchingObj = response.json()
+		res = parsePlexWatching(watchingObj)
 
 def plex_watching():
 	# Every call saves the info of session.xml to a file named plexPlaying
@@ -53,4 +67,4 @@ def plex_watching():
 		return 'Null playing'
 
 if __name__ == '__main__':
-	print(plex_watching())
+	print(getPlexWatching())
