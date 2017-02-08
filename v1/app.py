@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, \
 from diskusage import diskUsage
 from uptime import timeSinceBoot
 from cpuTemp import getCpuTemp
+from tmdb import tmdbSearch
 
 from plexMovies import getSpecificMovieInfo
 
@@ -97,22 +98,12 @@ def get_temps():
 # Search, watching, +photo
 @app.route('/api/v1/plex/request', methods=['GET'])
 def get_movieRequest():
-	if (request.args.get("query") != None):
-		requestType = "search/multi?"
-		requestAPI = "api_key=" + "9fa154f5355c37a1b9b57ac06e7d6712"
-		requestQuery = "&query=" + str(request.args.get('query'))
-		requestLanguage = "&language=en.US"
+	query = request.args.get("query")
+	if (query != None):
+		# TODO if list is empty
+		return jsonify(tmdbSearch(query))
 
-		url = tmdbBaseURL + requestType + requestAPI + requestQuery + requestLanguage
-		# url = "https://api.themoviedb.org/3/search/multi?include_adult=false&query=home%20alone&language=en-US&api_key=9fa154f5355c37a1b9b57ac06e7d6712"
-
-		payload = "{}"
-		response = requests.request("GET", url, data=payload)
-
-		print(response.text)
-		return response.text
-
-	else: return jsonify ({ "Error": "Query not defined." })
+	else: return jsonify({ "Error": "Query not defined." })
 
 @app.route('/api/v1/plex/movies', methods=['GET'])
 @auth.login_required
