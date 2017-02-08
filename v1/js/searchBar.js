@@ -26,7 +26,7 @@ function queryTMDB(query) {
 	  		if (posterURL != null)
 	  			var poster_path = "http://image.tmdb.org/t/p/w500"+jsonObj.movies[key].poster_path;
 	  		else
-	  			var poster_path = "image_nf.svg";
+	  			var poster_path = "images/image_nf.svg";
 	  		
 	  		var node = document.createElement("li");                 // Create a <li> node
 			var imageNode = document.createElement('img');
@@ -37,6 +37,7 @@ function queryTMDB(query) {
 			button2Node.innerHTML = '<button onclick="request('+ id +')">FORCE REQUEST</button>';
 			
 			imageNode.src = poster_path;
+			imageNode.style.width = "500px";
 
 			node.appendChild(textNode);       	                    // Append the text to <li>
 			node.appendChild(imageNode);
