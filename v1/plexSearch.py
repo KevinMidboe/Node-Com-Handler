@@ -9,6 +9,39 @@ from requests import get
 
 plexBaseURL = "http://10.0.0.41:32400/"
 
+def getMovieInfo(item):
+	title = item["title"]
+	year = item["year"]
+	rating = item["rating"]
+	art = item["art"]
+	thumb = item["thumb"]
+
+	for mediaInfo in item["_children"]:
+		if mediaInfo["_elementType"] == "Media":
+			container = mediaInfo["container"]
+			resolution = mediaInfo["videoResolution"]
+			bitrate = mediaInfo["bitrate"]
+			videoCodec = mediaInfo["videoCodec"]
+			videoFrameRate = mediaInfo["videoFrameRate"]
+
+	return {"title":title, "year":year, "rating":rating, "container":container, 
+		"resolution":resolution, "bitrate":bitrate, "videoCodec":videoCodec,
+		"videoFrameRate":videoFrameRate, "art":art, "thumb":thumb}
+
+def getShowInfo(item):
+	media = []
+
+	title = item["title"]
+	year = item["year"]
+	rating = item["rating"]
+	art = item["art"]
+	thumb = item["thumb"]
+	seasons = item["childCount"]
+	episodes = item["leafCount"]
+
+	return {"title":title, "year":year, "seasons":seasons, "episodes":episodes, "rating":rating,
+		"art":art, "thumb":thumb}
+
 def plexSearch(query):
 	requestType = "search?"
 	requestQuery = "query=" + str(query)
@@ -23,32 +56,10 @@ def plexSearch(query):
 
 		for child in resContent["_children"]:
 			cType = child["type"]
-			if cType == "movie" or cType == "show":
-				title = child["title"]
-				year = child["year"]
-				rating = child["rating"]
-				art = child["art"]
-				thumb = child["thumb"]
-
-				if cType == "movie":
-					for mediaInfo in child["_children"]:
-						if mediaInfo["_elementType"] == "Media":
-							container = mediaInfo["container"]
-							resolution = mediaInfo["videoResolution"]
-							bitrate = mediaInfo["bitrate"]
-							videoCodec = mediaInfo["videoCodec"]
-							videoFrameRate = mediaInfo["videoFrameRate"]
-
-							media.append({"title":title, "year":year, "rating":rating, "container":container,
-							 "resolution":resolution, "bitrate":bitrate, "videoCodec":videoCodec, 
-							 "videoFrameRate":videoFrameRate, "art":art, "thumb":thumb})
-
-				if cType == "show":
-					seasons = child["childCount"]
-					episodes = child["leafCount"]
-
-					media.append({"title":title, "year":year, "seasons":seasons, "episodes":episodes, "rating":rating,
-						"art":art, "thumb":thumb})
+			if cType == "movie":
+				media.append(getMovieInfo(child))
+			elif cType == "show":
+				media.append(getShowInfo(child))
 
 		return media
 
