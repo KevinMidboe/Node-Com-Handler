@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # Flask auth with HTTP '$ pip install flask_httpauth'
 # For https '$ pip install Flask-SSLify'
 
@@ -106,7 +107,7 @@ def get_movieRequest():
 		url = tmdbBaseURL + requestType + requestAPI + requestQuery + requestLanguage
 		# url = "https://api.themoviedb.org/3/search/multi?include_adult=false&query=home%20alone&language=en-US&api_key=9fa154f5355c37a1b9b57ac06e7d6712"
 
-		payload = "{}"
+		payload = "{application/json}"
 		response = requests.request("GET", url, data=payload)
 
 		print(response.text)
