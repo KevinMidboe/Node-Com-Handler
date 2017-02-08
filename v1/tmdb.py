@@ -7,33 +7,9 @@
 
 from requests import get
 
-plexBaseURL = "http://10.0.0.41:32400/"
 tmdbBaseURL = "https://api.themoviedb.org/3/"
 
-def plexSearch(query):
-	requestType = "search?"
-	requestQuery = "query=" + str(query)
-	header = {'Accept': 'application/json'}
-
-	url = plexBaseURL + requestType + requestQuery
-	response = get(url, headers=header)
-
-	if response.status_code == 200:
-		resContent = response.json()
-
-		for child in resContent["_children"]:
-			cType = child["type"]
-			if cType == "movie" or cType == "show":
-				print(child["title"], child["year"])
-
-def checkInPlex(query):
-	plexSearch(query)
-	return True
-
-
 def tmdbSearch(query, page=1):
-	plexSearch(query)
-
 	requestType = "search/multi?"
 	requestAPI = "api_key=" + "9fa154f5355c37a1b9b57ac06e7d6712"
 	requestQuery = "&query=" + str(query)
