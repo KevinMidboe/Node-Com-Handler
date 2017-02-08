@@ -107,11 +107,10 @@ def get_movieRequest():
 		url = tmdbBaseURL + requestType + requestAPI + requestQuery + requestLanguage
 		# url = "https://api.themoviedb.org/3/search/multi?include_adult=false&query=home%20alone&language=en-US&api_key=9fa154f5355c37a1b9b57ac06e7d6712"
 
-		payload = "{application/json}"
-		response = requests.request("GET", url, data=payload)
+		response = requests.get(url)
 
-		print(response.text)
-		return response.text
+		print(response.json)
+		return response.json
 
 	else: return jsonify ({ "Error": "Query not defined." })
 
@@ -158,4 +157,4 @@ def get_uptimesLoad():
 
 
 if __name__ == '__main__':
-	app.run(port=63590, debug=True)
+	app.run(host="0.0.0.0", port=63590, debug=True)
