@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-02-08 14:00:04
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-02-08 22:50:17
+# @Last Modified time: 2017-02-10 01:31:43
 
 from requests import get
 
@@ -42,6 +42,12 @@ def getShowInfo(item):
 	return {"title":title, "year":year, "seasons":seasons, "episodes":episodes, "rating":rating,
 		"art":art, "thumb":thumb}
 
+## MAJOR TODO
+# Seems to be a change in the return obj.
+# This looks way more like json. Need to re-write all this.
+# IDEA: Send the size and resolution for comaprison
+# No this is for a admin page. OR maybe a github project for 
+# people wanting to update movies. MAJOR IDEA HERE NOW! :D
 def plexSearch(query):
 	requestType = "search?"
 	requestQuery = "query=" + str(query)
@@ -49,6 +55,7 @@ def plexSearch(query):
 
 	url = plexBaseURL + requestType + requestQuery
 	response = get(url, headers=header)
+	print(response.json())
 
 	if response.status_code == 200:
 		resContent = response.json()
