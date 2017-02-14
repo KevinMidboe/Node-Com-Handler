@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 10:54:06
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-01-31 22:29:43
+# @Last Modified time: 2017-02-14 10:01:47
 
 # f_avail = free blocks avail to non sudo
 # frsize = fundamental file sys byte size
@@ -39,5 +39,5 @@ def diskUsage(optionalPath=None):
 		return None
 
 if __name__=="__main__":
-	n = diskUsage('/media/hdd1')
+	n = diskUsage('/')
 	print(n)
