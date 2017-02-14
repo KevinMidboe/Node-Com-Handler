@@ -9,6 +9,7 @@ def load():
 		arpOutput = check_output("cat /proc/loadavg", shell=True)
 		arpOutput = arpOutput.decode()
 		return findall('[0-9]{1,2}[\.][0-9]{2}', arpOutput)
+	
 	elif sysName == 'Darwin':
 		arpOutput = check_output("uptime", shell=True)
 		arpOutput = arpOutput.decode()
