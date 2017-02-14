@@ -19,7 +19,8 @@ def getCpuTemp():
 	
 	# Compute avg of curCpuTemps
 	avgCpuTemps = sum(curCpuTemps)/len(curCpuTemps)
-	return {"CPU Temp": avgCpuTemps}
+	return {"Avg CPU Temp": avgCpuTemps, "Max CPU temp": max(curCpuTemps),
+		"Min CPU temp": min(curCpuTemps)}
 
 
 if __name__ == "__main__":
