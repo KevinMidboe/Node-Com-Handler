@@ -3,7 +3,7 @@
 # @Author: KevinMidboe
 # @Date:   2017-01-28 10:54:06
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-02-18 11:39:00
+# @Last Modified time: 2017-02-18 11:40:34
 
 # f_avail = free blocks avail to non sudo
 # frsize = fundamental file sys byte size
@@ -26,13 +26,12 @@ def diskUsage(rootPath=None):
 	if rootPath == None: rootPath = '/'
 	
 	if not path.isdir(rootPath):
-		return {"Error": "Directory does not exist."}
+		return {"errors": "Directory does not exist."}
 
 	s = statvfs(rootPath)
 	byteLeft = s.f_bavail * s.f_frsize
 	byteTotal = s.f_blocks * s.f_frsize
 	byteUsed = byteTotal-byteLeft
-	print(byteLeft, byteTotal, byteUsed)
 	return { 'left': sizeof(byteLeft), 'used': sizeof(byteUsed), 'total': sizeof(byteTotal) }
 
 if __name__=="__main__":
