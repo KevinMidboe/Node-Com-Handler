@@ -52,7 +52,7 @@ def get_pw(username):
 # to not match.
 @auth.error_handler
 def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+    return make_response(jsonify({'errors': 'Unauthorized access'}), 401)
 
 # This would be replaced with a database, but single process and thread
 # can use local data like this for simplicity.
@@ -61,10 +61,10 @@ def unauthorized():
 # Want all return data to be JSON so create custom error response
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    return make_response(jsonify({'errors': 'Not found'}), 404)
 @app.errorhandler(400)
 def bad_request(error):
-    return make_response(jsonify({'error': 'Bad request'}), 400)
+    return make_response(jsonify({'errors': 'Bad request'}), 400)
 
 
 # --- Apollo Activity --- #
@@ -96,7 +96,7 @@ def get_movieRequest():
 		# TODO if list is empty
 		return jsonify(tmdbSearch(query))
 
-	else: return jsonify({ "Error": "Query not defined." })
+	else: return jsonify({ "errors": "Query not defined." })
 
 @app.route('/api/v1/plex/movies', methods=['GET'])
 def getPlexMovies():

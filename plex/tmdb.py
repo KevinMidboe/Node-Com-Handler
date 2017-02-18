@@ -3,77 +3,48 @@
 # @Author: KevinMidboe
 # @Date:   2017-02-08 14:00:04
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-02-08 23:19:53
+# @Last Modified time: 2017-02-16 17:08:08
 
-from requests import get
+import requests
+from pprint import pprint
 try:
 	from plexSearch import plexSearch
 except ImportError:
 	from plex.plexSearch import plexSearch
 
-tmdbBaseURL = "https://api.themoviedb.org/3/"
-
-def checkPlexExistance(tmdb, plex):
-	# THIS IS ONLY COMPARED ON YEAR
-	yearList = [movie["year"] for movie in plex]
-	print(yearList)
-
-	for movie in tmdb["movies"]:
-		print(movie["year"])
-		movie["exists"] = movie["year"] in str(yearList)
-	
-	return tmdb
-
-def createTMDBResultList(resContent):
-	movies = []
-	tvshows = []
-
-	for res in resContent["results"]:
-		if res["media_type"] == "movie":
-			id = res["id"]
-			title = res["original_title"]
-			year = res["release_date"][:4]
-			poster_path = res["poster_path"]
-
-			movies.append({"id": id, "title": title, "year": year, "poster_path": poster_path})
-
-		elif res["media_type"] == "tv":
-			id = res["id"]
-			name = res["original_name"]
-			year = res["first_air_date"][:4]
-			poster_path = res["poster_path"]
-
-			tvshows.append({"id": id, "title": name, "year": year, "poster_path": poster_path})
-
-	return { "movies": movies, "tvshows": tvshows }
+apiKey = "9fa154f5355c37a1b9b57ac06e7d6712"
 
 
 def tmdbSearch(query, page=1):
-	requestType = "search/multi?"
-	requestAPI = "api_key=" + "9fa154f5355c37a1b9b57ac06e7d6712"
-	requestQuery = "&query=" + str(query)
-	requestLanguage = "&language=en.US"
-	requestPage = "&page="+str(page)
+	payload = {"api_key":apiKey, "query":str(query), "language":"en.US", "page":str(page), }
+	header = {'Accept': 'application/json'}
 
-	url = tmdbBaseURL + requestType + requestAPI + requestQuery + requestLanguage + requestPage
-	print(url)
+	try:
+		r = requests.get("https://api.themoviedb.org/3/search/multi", params=payload, headers=header)
+	except requests.exceptions.ConnectionError:
+		return {"errors": "Could not connecting to: tmdb.com"}
+	except requests.exceptions.Timeout:
+		return {"errors": "Request timed out."}
+	except requests.exceptions.TooManyRedirects:
+		return {"errors": "Too many redirects, do you full network access?"}
 
-	response = get(url)
-	if response.status_code == 200:
-		resContent = response.json()
+	if r.status_code == 401:
+		return {"errors": "api key is not valid."}
+	elif r.status_code == 404:
+		return {"errors": "Please check url. (404)"}
+	elif r.status_code == requests.codes.ok and r.json()['total_results'] == 0:
+		return {"errors": "No results found."}
+	
 
-		plexSearchRes = plexSearch(query)
-		tmdbSearchRes = createTMDBResultList(resContent)
-
-		return checkPlexExistance(tmdbSearchRes, plexSearchRes)
+	return r.json()
 
 
 if __name__ == "__main__":
 	import sys
 	print(sys.argv)
 	if len(sys.argv) > 2:
-		print(tmdbSearch(sys.argv[1], int(sys.argv[2])))
+		pprint(tmdbSearch(sys.argv[1], int(sys.argv[2])))
 	elif len(sys.argv) > 1:
-		print(tmdbSearch(sys.argv[1]))
+		pprint(tmdbSearch(sys.argv[1]))
 	else:
-		print(tmdbSearch("star+wars",1))
+		pprint(tmdbSearch("star+wars",1))
