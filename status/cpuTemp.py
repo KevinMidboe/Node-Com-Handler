@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# @Author: KevinMidboe
+# @Date:   2017-02-15 23:37:36
+# @Last Modified by:   KevinMidboe
+# @Last Modified time: 2017-02-15 23:49:18
+
 import psutil
 from platform import system
+
+# TODO: Add cpu reading for macOS
 
 def getCpuTemp():
 	sysName = system()
