@@ -12,10 +12,11 @@ from werkzeug.security import generate_password_hash, \
 
 from status.diskusage import diskUsage
 from status.uptime import timeSinceBoot
+from status.load import load
 from status.cpuTemp import getCpuTemp
-from plex.tmdb import tmdbSearch
 
-from plex.plexMovies import getSpecificMovieInfo
+from plex.tmdb import tmdbSearch
+from plex.plexSearch import plexSearch
 
 app = Flask(__name__, static_url_path = "")
 auth = HTTPBasicAuth()
@@ -51,7 +52,7 @@ def get_pw(username):
 # to not match.
 @auth.error_handler
 def unauthorized():
-    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+    return make_response(jsonify({'errors': 'Unauthorized access'}), 401)
 
 # This would be replaced with a database, but single process and thread
 # can use local data like this for simplicity.
@@ -60,39 +61,31 @@ def unauthorized():
 # Want all return data to be JSON so create custom error response
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    return make_response(jsonify({'errors': 'Not found'}), 404)
 @app.errorhandler(400)
 def bad_request(error):
-    return make_response(jsonify({'error': 'Bad request'}), 400)
+    return make_response(jsonify({'errors': 'Bad request'}), 400)
 
 
 # --- Apollo Activity --- #
+@app.route('/api/v1/load', methods=['GET'])
+def get_load():
+    return jsonify(load())
+
 
 @app.route('/api/v1/disks', methods=['GET'])
-@auth.login_required
 def get_diskUsage():
-    returningDiskUsage = diskUsage(request.args.get('dir'))
-    if returningDiskUsage != None:
-        return jsonify(returningDiskUsage)
-    else:
-        abort(404)
+    return jsonify(diskUsage(request.args.get('dir')))
 
 
 @app.route('/api/v1/uptimes', methods=['GET'])
-@auth.login_required
 def get_uptimes():
-    try:
-        return jsonify({ 'uptime': timeSinceBoot() })
-    except:
-        abort(404)
+    return jsonify({ 'uptime': timeSinceBoot() })
 
 @app.route('/api/v1/temps', methods=['GET'])
 def get_temps():
-    cpuTemp = getCpuTemp()
-    if cpuTemp != None:
-        return jsonify( {"Avg cpu temp": cpuTemp} )
-    else:
-        return jsonify( {"Error":"Temp reading not supported for host machine."} )
+    return  jsonify(getCpuTemp())
+
 
 # TODO PLEX
 # Search, watching, +photo
@@ -103,15 +96,15 @@ def get_movieRequest():
 		# TODO if list is empty
 		return jsonify(tmdbSearch(query))
 
-	else: return jsonify({ "Error": "Query not defined." })
+	else: return jsonify({ "errors": "Query not defined." })
 
 @app.route('/api/v1/plex/movies', methods=['GET'])
-@auth.login_required
 def getPlexMovies():
     title = request.args.get('title')
 
-    movieInfo = getSpecificMovieInfo(title)
+    movieInfo = plexSearch(title)
     if movieInfo != None:
+        print(movieInfo)
         return jsonify(movieInfo)
 
     abort(500)
@@ -126,24 +119,6 @@ def getPlexWatchings():
     if movieInfo != None:
         return jsonify(movieInfo)
 
-
-@app.route('/api/v1/uptimes/duration', methods=['GET'])
-@auth.login_required
-def get_uptimesDuration():
-    up = uptime.uptime()
-    return jsonify( {'Duration': up.duration} )
-
-@app.route('/api/v1/uptimes/users', methods=['GET'])
-@auth.login_required
-def get_uptimesUsers():
-    up = uptime.uptime()
-    return jsonify( {'Users': up.users} )
-
-@app.route('/api/v1/uptimes/load', methods=['GET'])
-@auth.login_required
-def get_uptimesLoad():
-    up = uptime.uptime()
-    return jsonify( {'Load': up.load} )
 
 
 if __name__ == '__main__':

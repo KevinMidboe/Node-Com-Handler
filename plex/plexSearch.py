@@ -3,9 +3,10 @@
 # @Author: KevinMidboe
 # @Date:   2017-02-08 14:00:04
 # @Last Modified by:   KevinMidboe
-# @Last Modified time: 2017-02-10 01:31:43
+# @Last Modified time: 2017-02-18 11:37:08
 
-from requests import get
+import requests
+from pprint import pprint
 
 plexBaseURL = "http://10.0.0.41:32400/"
 
@@ -42,21 +43,36 @@ def getShowInfo(item):
 	return {"title":title, "year":year, "seasons":seasons, "episodes":episodes, "rating":rating,
 		"art":art, "thumb":thumb}
 
+
+
+def plexSearch(query):
+	payload = {"query":query, "type":"1,2"}
+	header = {'Accept': 'application/json'}
+	r = requests.get(plexBaseURL+"search",params=payload, headers=header)
+
+	rObject = r.json()["MediaContainer"]
+	if (r.status_code != requests.codes.ok or rObject["size"] == 0):
+		return {"errors": "Nothing found for query: " + query}
+
+	return rObject["Metadata"]
+
+
 ## MAJOR TODO
 # Seems to be a change in the return obj.
 # This looks way more like json. Need to re-write all this.
 # IDEA: Send the size and resolution for comaprison
 # No this is for a admin page. OR maybe a github project for 
 # people wanting to update movies. MAJOR IDEA HERE NOW! :D
-def plexSearch(query):
+def plexXMLSearch(query):
+	print(query)
 	requestType = "search?"
 	requestQuery = "query=" + str(query)
 	header = {'Accept': 'application/json'}
 
 	url = plexBaseURL + requestType + requestQuery
-	response = get(url, headers=header)
-	print(response.json())
+	response = requests.get(url, headers=header)
 
+	pprint(response.json())
 	if response.status_code == 200:
 		resContent = response.json()
 		media = []
@@ -74,7 +90,4 @@ def plexSearch(query):
 
 if __name__ == "__main__":
 	# print(plexSearch("star+wars"))
-	tiss = plexSearch("star+wars")
-	for al in tiss:
-		if (al['year']==2015):
-			print('thishsihis')
+	pprint(plexSearch("star"))
